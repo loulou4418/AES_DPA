@@ -13,13 +13,13 @@
 #include "decript.h"
 
 extern char texts[NB_DATA_SET][MSG_LEN];
-extern float traces[NB_DATA_SET][NB_TRACE_VALUE];
+extern double traces[NB_DATA_SET][NB_TRACE_VALUE];
 
 int main(void)
 {
     load_text();
     load_traces();
-    make_group_and_average(texts,traces,1);
+    make_group_and_average(texts,traces,2);
 
     //pthread_t th_reader;
     /* thread creation */

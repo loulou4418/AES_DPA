@@ -7,8 +7,8 @@
 
 char tmp_buffer[1024];
 char texts[NB_DATA_SET][MSG_LEN];
-float traces[NB_DATA_SET][NB_TRACE_VALUE];
-char tmp_trace_buf[10 * NB_TRACE_VALUE];
+double traces[NB_DATA_SET][NB_TRACE_VALUE];
+char tmp_trace_buf[13 * NB_TRACE_VALUE];
 
 char load_text(void)
 {
@@ -53,7 +53,7 @@ char load_text(void)
     return 0;
 }
 
-void print_trace(float *buffer, uint32_t size)
+void print_trace(double *buffer, uint32_t size)
 {
     FILE *gnu_file = fopen("data/gnu_file", "w");
     if (!gnu_file)
@@ -66,7 +66,7 @@ void print_trace(float *buffer, uint32_t size)
 
     for (register uint32_t i = 0; i < size; i++)
     {
-        fprintf(gnu_file, "%f \n", buffer[i]);
+        fprintf(gnu_file, "%lf \n", buffer[i]);
     }
 
     fprintf(gnu_file, "e ");
@@ -78,7 +78,7 @@ void print_trace(float *buffer, uint32_t size)
 char load_traces(void)
 {
 
-    FILE *fp = fopen("data/traces.csv", "r");
+    FILE *fp = fopen("data/traces_double.csv", "r");
     if (!fp)
     {
         printf("Can't open traces file\n");
@@ -103,7 +103,7 @@ char load_traces(void)
 
                 return -1;
             }
-            traces[id_col][id_value] = (float)atof(data);
+            traces[id_col][id_value] = (double)atof(data);
             /* strtok return NULL if data = \n */
             data = strtok(NULL, ",");
 

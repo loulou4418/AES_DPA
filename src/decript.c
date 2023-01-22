@@ -7,9 +7,9 @@
 #define START_SBOX 2300
 #define END_SBOX 4100
 
-float tem_trace[NB_TRACE_VALUE];
+double tem_trace[NB_TRACE_VALUE];
 
-void make_group_and_average(char texts[][MSG_LEN], float traces[][NB_TRACE_VALUE], uint8_t bit_index)
+void make_group_and_average(char texts[][MSG_LEN], double traces[][NB_TRACE_VALUE], uint8_t bit_index)
 {
 
     double moy_group0[NB_TRACE_VALUE], moy_group1[NB_TRACE_VALUE];
@@ -77,7 +77,7 @@ void make_group_and_average(char texts[][MSG_LEN], float traces[][NB_TRACE_VALUE
             best_key = key;
             max_cr_cr = max_diff - min_diff;
         }
-        printf("Compute key %d \t  gr0:%d \t gr1:%d \t with crcr %f \t best key is %d with max cr cr %f\n", key, nb_value_in_group0, nb_value_in_group1, (max_diff - min_diff), best_key, max_cr_cr);
+        printf("Compute key %d \t  gr0:%d \t gr1:%d \t with crcr %lf \t best key is %d with max cr cr %lf\n", key, nb_value_in_group0, nb_value_in_group1, (max_diff - min_diff), best_key, max_cr_cr);
     }
     printf("The best key is %d\n", best_key);
     print_trace(tem_trace, 5000);
