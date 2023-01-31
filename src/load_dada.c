@@ -8,7 +8,7 @@
 char tmp_buffer[1024];
 char texts[NB_DATA_SET][MSG_LEN];
 double traces[NB_DATA_SET][NB_TRACE_VALUE];
-char tmp_trace_buf[13 * NB_TRACE_VALUE];
+char tmp_trace_buf[17 * NB_TRACE_VALUE];
 
 char load_text(void)
 {
@@ -98,7 +98,7 @@ char load_traces(void)
             if (id_col >= NB_DATA_SET || id_value >= NB_TRACE_VALUE)
             {
                 /* error out of array  */
-                printf("Error out of array traces, id_col:%d, id_value:%d\n", id_col, id_value);
+                printf("Load data, Error out of array traces, id_col:%d, id_value:%d\n", id_col, id_value);
                 fclose(fp);
 
                 return -1;

@@ -17,6 +17,7 @@ void make_group_and_average(char texts[][MSG_LEN], double traces[][NB_TRACE_VALU
     uint32_t nb_value_in_group0 = 0, nb_value_in_group1 = 0;
     unsigned char best_key = 0;
     double max_diff = 0, min_diff = 0, max_cr_cr = 0;
+    char res_aes;
     for (uint16_t key = 0; key <= 0xFF; key++)
     {
         nb_value_in_group0 = 0, nb_value_in_group1 = 0;
@@ -27,15 +28,17 @@ void make_group_and_average(char texts[][MSG_LEN], double traces[][NB_TRACE_VALU
         for (uint32_t id_text = 0; id_text < NB_DATA_SET; id_text++)
         {
             /* choose the group */
-            if ((fist_step_AES(texts[id_text][0 /* id sous-clée */], key) & (0x1 << bit_index)) == 1)
-            {
-                moy_group = moy_group1;
-                nb_value_in_group1++;
-            }
-            else
+            res_aes = fist_step_AES(texts[id_text][1 /* id sous-clée */], key);
+            // printf("aes out : %d\n",res_aes);
+            if ((res_aes & (0x1 << bit_index)) == 0)
             {
                 moy_group = moy_group0;
                 nb_value_in_group0++;
+            }
+            else
+            {
+                moy_group = moy_group1;
+                nb_value_in_group1++;
             }
             /* Add the trace to prepare average */
             for (register uint32_t id_value = START_SBOX; id_value < END_SBOX; id_value++)
@@ -67,18 +70,22 @@ void make_group_and_average(char texts[][MSG_LEN], double traces[][NB_TRACE_VALU
             {
                 max_diff = diff;
             }
-            if (key == 24)
-            {
-                tem_trace[id_value] = diff;
-            }
         }
-        if ((max_diff - min_diff) > max_cr_cr)
+        if (max_cr_cr < 0)
+        {
+            max_cr_cr = -max_cr_cr;
+        }
+        if (min_diff < 0)
+        {
+            min_diff = -min_diff;
+        }
+        if ((max_diff + min_diff) > max_cr_cr)
         {
             best_key = key;
-            max_cr_cr = max_diff - min_diff;
+            max_cr_cr = max_diff + min_diff;
         }
-        printf("Compute key %d \t  gr0:%d \t gr1:%d \t with crcr %lf \t best key is %d with max cr cr %lf\n", key, nb_value_in_group0, nb_value_in_group1, (max_diff - min_diff), best_key, max_cr_cr);
+        // printf("Compute key %d\tgr0:%d \t gr1:%d \t with crcr %lf \t best key is %d with max cr cr %lf\n", key, nb_value_in_group0, nb_value_in_group1, (max_diff + min_diff), best_key, max_cr_cr);
     }
     printf("The best key is %d\n", best_key);
-    print_trace(tem_trace, 5000);
+    // print_trace(tem_trace, 5000);
 }
