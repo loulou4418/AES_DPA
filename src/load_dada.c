@@ -34,7 +34,7 @@ char load_text(void)
                 printf("Error out of array text \n");
                 return -1;
             }
-            texts[id_col][id_letter] = *data;
+            texts[id_col][id_letter] = atoi(data);
             /* strtok return NULL if data = \n */
             data = strtok(NULL, ",");
 
