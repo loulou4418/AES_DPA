@@ -20,20 +20,18 @@ int main(void)
 {
     load_text();
     load_traces();
-    for (uint8_t i = 0; i < 8; i++)
+
+    pthread_t th_reader[16];
+    for (uint8_t i = 0; i < 16; i++)
     {
-        make_group_and_average(texts, traces, i);
+        /* thread creation */
+        if (pthread_create(&th_reader[i], NULL, (void *)make_group_and_average,&i) < 0)
+        {
+            fprintf(stderr, "pthread_create error for reader ");
+            exit(0);
+        }
+        (void)pthread_join(th_reader[i], NULL);
     }
-
-    // pthread_t th_reader;
-    /* thread creation */
-    // if (pthread_create(&th_reader, NULL, (void *)reader, NULL) < 0)
-    // {
-    //     fprintf(stderr, "pthread_create error for reader ");
-    //     exit(0);
-    // }
-
-    // (void)pthread_join(th_convertor, &ret);
 
     exit(0);
 }

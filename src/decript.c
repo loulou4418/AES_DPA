@@ -9,9 +9,13 @@
 
 double tem_trace[NB_TRACE_VALUE];
 
-void make_group_and_average(char texts[][MSG_LEN], double traces[][NB_TRACE_VALUE], uint8_t bit_index)
-{
+extern char texts[NB_DATA_SET][MSG_LEN];
+extern double traces[NB_DATA_SET][NB_TRACE_VALUE];
 
+void make_group_and_average(void *arg)
+{
+    uint8_t id_sub_key = *((uint8_t *)arg);
+    uint8_t bit_index = 0;
     double moy_group0[NB_TRACE_VALUE], moy_group1[NB_TRACE_VALUE];
     double *moy_group;
     uint32_t nb_value_in_group0 = 0, nb_value_in_group1 = 0;
@@ -28,8 +32,8 @@ void make_group_and_average(char texts[][MSG_LEN], double traces[][NB_TRACE_VALU
         for (uint32_t id_text = 0; id_text < NB_DATA_SET; id_text++)
         {
             /* choose the group */
-            res_aes = fist_step_AES(texts[id_text][1 /* id sous-clée */], key);
-            // printf("aes out : %d\n",res_aes);
+            res_aes = fist_step_AES(texts[id_text][id_sub_key /* id sous-clée */], key);
+
             if ((res_aes & (0x1 << bit_index)) == 0)
             {
                 moy_group = moy_group0;
@@ -52,6 +56,7 @@ void make_group_and_average(char texts[][MSG_LEN], double traces[][NB_TRACE_VALU
                 moy_group[id_value] += traces[id_text][id_value];
             }
         }
+
         /* Real average  */
         max_diff = -10, min_diff = 10;
         for (register uint32_t id_value = START_SBOX; id_value < END_SBOX; id_value++)
@@ -71,10 +76,6 @@ void make_group_and_average(char texts[][MSG_LEN], double traces[][NB_TRACE_VALU
                 max_diff = diff;
             }
         }
-        if (max_cr_cr < 0)
-        {
-            max_cr_cr = -max_cr_cr;
-        }
         if (min_diff < 0)
         {
             min_diff = -min_diff;
@@ -87,5 +88,6 @@ void make_group_and_average(char texts[][MSG_LEN], double traces[][NB_TRACE_VALU
         // printf("Compute key %d\tgr0:%d \t gr1:%d \t with crcr %lf \t best key is %d with max cr cr %lf\n", key, nb_value_in_group0, nb_value_in_group1, (max_diff + min_diff), best_key, max_cr_cr);
     }
     printf("The best key is %d\n", best_key);
+    pthread_exit(0);
     // print_trace(tem_trace, 5000);
 }
