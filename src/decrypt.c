@@ -13,6 +13,8 @@ double tem_trace[NB_TRACE_VALUE];
 extern char texts[NB_DATA_SET][MSG_LEN];
 extern double traces[NB_DATA_SET][NB_TRACE_VALUE];
 
+unsigned char AES_subkeys[16];
+
 void add_trace(double *group, uint32_t id_text)
 {
     /* Add the trace to prepare average */
@@ -91,7 +93,8 @@ void calculate_AES_subkey(void *arg)
         }
         // printf("Compute key %d\tgr0:%d \t gr1:%d \t with crcr %lf \t best key is %d with max cr cr %lf\n", key, nb_value_in_group0, nb_value_in_group1, (max_diff + min_diff), best_key, max_cr_cr);
     }
-    printf("The best key is %d\n", best_key);
-    pthread_exit(0);
+
+    AES_subkeys[id_sub_key] = best_key;
+
     // print_trace(tem_trace, 5000);
 }

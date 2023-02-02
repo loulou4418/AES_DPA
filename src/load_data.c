@@ -118,7 +118,7 @@ char load_traces(void)
         id_col++;
     }
 
-    printf("End of traces \n");
+    printf("Success loading data \n");
 
     fclose(fp);
 
