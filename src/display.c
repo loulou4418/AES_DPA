@@ -9,7 +9,7 @@ void display_AES_key(unsigned char *AES_subkeys)
 
     for (uint8_t i = 0; i < 16; i++)
     {
-        printf("%x ", AES_subkeys[i]);
+        printf("%02x ", AES_subkeys[i]);
     }
 
     printf("\n");
