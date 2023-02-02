@@ -10,7 +10,7 @@
 
 /* user inludes */
 #include "load_data.h"
-#include "decript.h"
+#include "decrypt.h"
 #include "AES.h"
 
 extern char texts[NB_DATA_SET][MSG_LEN];
@@ -25,7 +25,7 @@ int main(void)
     for (uint8_t i = 0; i < 16; i++)
     {
         /* thread creation */
-        if (pthread_create(&th_reader[i], NULL, (void *)make_group_and_average,&i) < 0)
+        if (pthread_create(&th_reader[i], NULL, (void *)calculate_AES_subkey, &i) < 0)
         {
             fprintf(stderr, "pthread_create error for reader ");
             exit(0);
