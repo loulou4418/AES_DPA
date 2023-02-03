@@ -47,6 +47,10 @@ char load_text(void)
             id_letter++;
         }
         id_col++;
+
+        if (id_col == MAX_DATA_SET){
+            break;
+        }
     }
 
     fclose(fp);
@@ -86,7 +90,7 @@ char load_traces(void)
     }
 
     /* get one line */
-    uint32_t id_value = 0, id_col = 0, nb_value=0;
+    uint32_t id_value = 0, id_col = 0, nb_value = 0;
     register char *data;
     while (fgets(tmp_trace_buf, sizeof(tmp_trace_buf), fp) != NULL)
     {
@@ -122,7 +126,7 @@ char load_traces(void)
 
     fclose(fp);
 
-  //  print_trace(traces[5], nb_value +1);
+    //  print_trace(traces[5], nb_value +1);
 
     return 0;
 }
