@@ -4,7 +4,6 @@
 #     - *.h
 # - src/
 #     - *.c
-#     - *.cpp
 # - obj/
 #     - *.o
 # - main
@@ -19,10 +18,8 @@ LIBS :=
 
 FLAGS := -Wall 
 CCFLAGS := $(FLAGS) -std=c99 -g3 -O3
-CXXFLAGS := $(FLAGS)
 
 CC := gcc
-Cxx := g++
 
 all: $(OBJECTS)
 	$(CC) $(CCFLAGS) $(INCLUDE) $(OBJECTS) -o $(TARGET) $(LIBPATH) $(LIBS)
@@ -30,14 +27,17 @@ all: $(OBJECTS)
 %.o: ../src/%.c
 	$(CC) $(CCFLAGS) $(INCLUDE) -c $< -o $@
 
-%.o: ../src/%.cpp
-	$(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
-
-.PHONY: clean help
+.PHONY: clean
 
 clean:
 	rm -rf obj/*
+	rm -f data/*.csv
 	rm -f $(TARGET)
 	
-help:
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+extract-numpy:
+	cd data && python3 extract_data_in_csv.py
+
+DPA:
+	make extract-numpy
+	make
+	./main
