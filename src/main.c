@@ -1,27 +1,33 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <semaphore.h>
-#include <unistd.h>
-#include <stdint.h>
-#include <mqueue.h>
-#include <fcntl.h>
-#include <errno.h>
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <pthread.h>
+// #include <semaphore.h>
+// #include <unistd.h>
+// #include <stdint.h>
+// #include <mqueue.h>
+// #include <fcntl.h>
+// #include <errno.h>
 
 /* user inludes */
+#include "commun.h"
 #include "load_data.h"
 #include "decrypt.h"
 #include "AES.h"
 #include "display.h"
 
+/* global array of texts*/
 extern char texts[NB_DATA_SET][MSG_LEN];
+
+/* global array for all traces */
 extern double traces[NB_DATA_SET][NB_TRACE_VALUE];
+
+/* global array for AES subkeys */
 extern unsigned char AES_subkeys[16];
 
 int main(void)
 {
-    load_text();
-    load_traces();
+    load_text("data/texts.csv");
+    load_traces("data/traces_double.csv");
 
     printf("Please wait ");
     fflush(stdout);

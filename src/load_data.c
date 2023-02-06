@@ -5,15 +5,27 @@
 
 #include "commun.h"
 
-char tmp_buffer[1024];
+/* global array of texts*/
 char texts[NB_DATA_SET][MSG_LEN];
-double traces[NB_DATA_SET][NB_TRACE_VALUE];
-char tmp_trace_buf[17 * NB_TRACE_VALUE];
 
-char load_text(void)
+/* global array for all traces */
+double traces[NB_DATA_SET][NB_TRACE_VALUE];
+
+/* temporary buffer use to store one line of csv file */
+char tmp_trace_buf[17 * NB_TRACE_VALUE]; // TODO 17 should be define
+
+/* temprary buffer to store the trace that will be displayed with gnuplot */
+char tmp_buffer[1024];
+
+/** @brief Copy text from csv file to array
+ * @param[in] file_name
+ * @return 0 if ok
+ * @return -1 if error
+*/
+char load_text(char * file_name)
 {
 
-    FILE *fp = fopen("data/texts.csv", "r");
+    FILE *fp = fopen(file_name, "r");
     if (!fp)
     {
         printf("Can't open texts file\n");
@@ -57,32 +69,16 @@ char load_text(void)
     return 0;
 }
 
-void print_trace(double *buffer, uint32_t size)
+/**
+ * @brief Load traces from csv file to array
+ * 
+ * @param file_name 
+ * @return 0 if ok
+ * @return -1 if error
+ */
+char load_traces(char * file_name)
 {
-    FILE *gnu_file = fopen("data/gnu_file", "w");
-    if (!gnu_file)
-    {
-        printf("Can't create gnu file\n");
-        return;
-    }
-    /* Add gnuplot command at the top of the file */
-    fprintf(gnu_file, "plot '-' with lines\n");
-
-    for (register uint32_t i = 0; i < size; i++)
-    {
-        fprintf(gnu_file, "%lf \n", buffer[i]);
-    }
-
-    fprintf(gnu_file, "e ");
-    fflush(gnu_file);
-    fclose(gnu_file);
-    system("gnuplot -persistent data/gnu_file");
-}
-
-char load_traces(void)
-{
-
-    FILE *fp = fopen("data/traces_double.csv", "r");
+    FILE *fp = fopen(file_name, "r");
     if (!fp)
     {
         printf("Can't open traces file\n");
@@ -92,10 +88,12 @@ char load_traces(void)
     /* get one line */
     uint32_t id_value = 0, id_col = 0, nb_value = 0;
     register char *data;
+    /* get one line */
     while (fgets(tmp_trace_buf, sizeof(tmp_trace_buf), fp) != NULL)
     {
-        /* first call data first char */
+        /* Extract values between ',' */
         data = strtok(tmp_trace_buf, ",");
+        /* first call data first char */
 
         while (1)
         {
@@ -125,8 +123,6 @@ char load_traces(void)
     printf("Success loading data \n");
 
     fclose(fp);
-
-    //  print_trace(traces[5], nb_value +1);
 
     return 0;
 }

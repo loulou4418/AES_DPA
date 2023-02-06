@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #define NB_DATA_SET 1000
 #define MAX_DATA_SET 1000
