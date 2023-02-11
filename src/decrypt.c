@@ -15,9 +15,10 @@ extern char texts[NB_DATA_SET][MSG_LEN];
 extern double traces[NB_DATA_SET][NB_TRACE_VALUE];
 
 /* global array for AES subkeys */
-extern unsigned char AES_subkeys[16];
+unsigned char AES_subkeys[16];
 
-/** @brief Add a trace in a group to prepare average
+/**
+ * @brief Add a trace in a group to prepare average
  * @param[in] group
  * @param[in] id_text pass the id of the trace to add.
  * The trace itself is in the global array traces
@@ -37,7 +38,8 @@ void add_trace(double *group, uint32_t id_text)
     }
 }
 
-/** @brief Calculate the AES subkey
+/**
+ * @brief Calculate the AES subkey
  * @param[in] arg pass the id of the subkey to calculate.
  * @note The subkey will be store in the global array AES_subkeys
  */

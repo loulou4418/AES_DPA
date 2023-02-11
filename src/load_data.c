@@ -17,7 +17,8 @@ char tmp_trace_buf[17 * NB_TRACE_VALUE]; // TODO 17 should be define
 /* temprary buffer to store the trace that will be displayed with gnuplot */
 char tmp_buffer[1024];
 
-/** @brief Copy text from csv file to array
+/**
+ * @brief Copy text from csv file to array
  * @param[in] file_name
  * @return 0 if ok
  * @return -1 if error
@@ -71,7 +72,6 @@ char load_text(char * file_name)
 
 /**
  * @brief Load traces from csv file to array
- * 
  * @param file_name 
  * @return 0 if ok
  * @return -1 if error
