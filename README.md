@@ -3,6 +3,7 @@
 During the labs, the DPA attack was implemented in Python language.
 We thought the language's performance was low since it took up to one minute to calculate a single key.
 We wanted to compare these performance results with the same algorithm but in C language.
+This project is distributed under the MIT license, see LICENSE file for more details.
 
 ## Usage
 

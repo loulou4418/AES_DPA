@@ -1,3 +1,5 @@
+// See LICENSE for license details.
+
 #include "commun.h"
 
 char load_text(char * file_name);
